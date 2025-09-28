@@ -17,9 +17,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        Button next = (Button) findViewById(R.id.start);
 
-        next.setOnClickListener(
+        TextView title = findViewById(R.id.title);
+        String titleText = "<font color='#236DF6'>Isi</font><font color='#141414'>Study</font>";
+        title.setText(Html.fromHtml(titleText));
+
+        TextView subtitle = findViewById(R.id.subtitle);
+        String subtitleText = "Let’s Go To <br>Pomodoro <br><font color='#236DF6'>Study</font> Time.";
+        subtitle.setText(Html.fromHtml(subtitleText));
+
+        Button start = (Button) findViewById(R.id.start);
+        start.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
