@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">FittnessApp</string>
+    <string name="title"><font color='#236DF6'>Isi</font>Study</string>
+    <string name="signup_text">Don’t have an account? <b><font color='#2196F3' >Sign up</font></b></string>
 </resources>
