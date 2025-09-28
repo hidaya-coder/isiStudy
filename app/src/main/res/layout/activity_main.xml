@@ -11,12 +11,11 @@
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="32dp"
+        android:textSize="32sp"
         android:textStyle="bold"
         android:fontFamily="@font/nunito_sans"
         android:layout_marginBottom="40dp"
         android:textColor="#141414"
-        android:text="IsiStudy"
         />
 
     <ImageView
@@ -32,11 +31,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/nunito_sans"
-        android:textSize="45dp"
+        android:textSize="45sp"
         android:lineSpacingExtra="15dp"
         android:textStyle="bold"
         android:textColor="#141414"
-        android:text="Let’s Go To \nPomodoro \nStudy Time."
         android:letterSpacing="0.02"/>
 
 
@@ -58,11 +56,11 @@
             android:id="@+id/start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Start "
+            android:text="Start"
             android:backgroundTint="#141414"
             android:textColor="@android:color/white"
             android:fontFamily="@font/nunito_sans"
-            android:textSize="24dp"
+            android:textSize="24sp"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
             android:paddingLeft="24dp"
