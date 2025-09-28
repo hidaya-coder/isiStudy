@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center_horizontal"
-    android:padding="30dp"
+    android:padding="40dp"
     android:background="#F7F3EA">
 
     <!-- Illustration en haut -->
@@ -73,7 +73,7 @@
         android:textColor="#236DF6"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:layout_marginBottom="300dp" />
+        android:layout_marginBottom="280dp" />
 
     <!-- Sign up -->
     <TextView
