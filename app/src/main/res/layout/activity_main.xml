@@ -4,24 +4,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
+    android:paddingTop="40dp"
+    android:paddingBottom="40dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
     >
 
     <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="IsiStudy."
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/nunito_sans" />
+
+    <TextView
+        android:id="@+id/tvSubtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="WELCOME TO ISIFITNESS"
-        android:textSize="24sp"
-        android:fontFamily="sans-serif-medium"
-       />
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/nunito_sans"
+        android:layout_marginTop="12dp"
+      />
 
     <Button
         android:id="@+id/next"
         android:layout_width="match_parent"
-        android:layout_marginHorizontal="50dp"
         android:layout_height="wrap_content"
-        android:text="NEXT"
+        android:layout_marginHorizontal="50dp"
         android:layout_marginTop="24dp"
+        android:text="NEXT"
         android:backgroundTint="#2196F3"
-        />
+        android:textColor="#FFFFFF"
+        android:fontFamily="@font/nunito_sans" />
+
 </LinearLayout>
