@@ -23,11 +23,11 @@ public class Home extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_pomodoro_timer);
 
         timerText = findViewById(R.id.timerText);
-        progressBar = findViewById(R.id.progressBar);
-        startButton = findViewById(R.id.startButton);
+        progressBar = findViewById(R.id.circleProgress);
+        startButton = findViewById(R.id.stopButton);
 
         progressBar.setMax(totalTimeInMillis / 1000);
 
