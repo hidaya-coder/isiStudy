@@ -30,7 +30,7 @@ Elle offre une expérience simple, motivante et personnalisée pour booster la c
 - Design minimaliste, fluide et moderne.
 
 
-✍️ Auteur : [Hidaya Tabbene]
+✍️ Auteur : Hidaya Tabbene
 📅 Projet réalisé dans le cadre des TPs Android à l’ISI.
 
 
