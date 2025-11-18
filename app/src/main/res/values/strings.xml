@@ -2,5 +2,5 @@
     <string name="app_name">IsiStudyApp</string>
     <string name="title"><font color='#236DF6'>Isi</font>Study</string>
     <string name="subtitle">Let’s Go To <br>Pomodoro </br> <font color='#236DF6'>Study</font> Time.</string>
-    <string name="signup_text">Don’t have an account? <b><font color='#2196F3' >Sign up</font></b></string>
+    <string name="signup_text">Don’t have an account? <b><font color='#2196F3'>Sign up</font></b></string>
 </resources>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/bg_note_item"
+    android:padding="16dp"
+    android:gravity="center_vertical">
+
+    <!-- Icône de la note -->
+    <ImageView
+        android:id="@+id/noteIcon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="12dp"
+        android:src="@drawable/ic_note_text" />
+
+    <!-- Contenu de la note -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/noteText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Texte de la note"
+            android:textSize="16sp"
+            android:textColor="#333333"
+            android:fontFamily="@font/nunito_sans"
+            android:maxLines="2"
+            android:ellipsize="end" />
+
+        <!-- Indicateur d'image -->
+        <TextView
+            android:id="@+id/imageIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🖼️ Avec image"
+            android:textSize="12sp"
+            android:textColor="#666666"
+            android:fontFamily="@font/nunito_sans"
+            android:layout_marginTop="4dp"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+    <!-- Miniature de l'image -->
+    <ImageView
+        android:id="@+id/noteThumbnail"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:scaleType="centerCrop"
+        android:background="@color/secondary"
+        android:visibility="gone" />
+
+</LinearLayout>

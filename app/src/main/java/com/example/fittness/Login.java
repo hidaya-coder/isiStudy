@@ -42,7 +42,7 @@ public class Login extends AppCompatActivity {
                 }
 
                 if (correct) {
-                    Intent intent = new Intent(Login.this,Home.class);
+                    Intent intent = new Intent(Login.this, TodoList.class);
                     startActivity(intent);
                 }
 

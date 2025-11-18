@@ -1,10 +1,153 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TodoList">
+    android:orientation="vertical"
+    android:padding="24dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- Header avec date et message -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="30dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mardi 23th"
+            android:textSize="16sp"
+            android:textColor="#666666"
+            android:fontFamily="@font/nunito_sans" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hello Shara!"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="#333333"
+            android:fontFamily="@font/nunito_sans"
+            android:layout_marginTop="5dp" />
+
+    </LinearLayout>
+
+    <!-- Bouton Start Studying -->
+    <Button
+        android:id="@+id/startpomodoro"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="Start Studying →"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:background="@drawable/bg_button"
+        android:textColor="@android:color/white"
+        android:fontFamily="@font/nunito_sans"
+        android:layout_marginBottom="30dp" />
+
+    <!-- Statistics Container -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="30dp">
+
+        <!-- Weekly Study Time 1 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="120dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:background="@drawable/bg_stat_card"
+            android:gravity="center"
+            android:padding="16dp"
+            android:layout_marginEnd="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Weekly Study Time"
+                android:textSize="14sp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/nunito_sans"
+                android:gravity="center" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="17h"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:fontFamily="@font/nunito_sans"
+                android:layout_marginTop="8dp" />
+
+        </LinearLayout>
+
+        <!-- Weekly Study Time 2 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="120dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:background="@drawable/bg_stat_card"
+            android:gravity="center"
+            android:padding="16dp"
+            android:layout_marginStart="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Completed Tasks"
+                android:textSize="14sp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/nunito_sans"
+                android:gravity="center" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="12h"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:fontFamily="@font/nunito_sans"
+                android:layout_marginTop="8dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Section Titre Notes -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Mes Notes"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#333333"
+        android:fontFamily="@font/nunito_sans"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Liste des Notes avec layout personnalisé -->
+    <ListView
+        android:id="@+id/notesListView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="8dp" />
+
+    <!-- Bouton Ajouter Note -->
+    <Button
+        android:id="@+id/addNoteButton"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="+ Ajouter une note"
+        android:textSize="16sp"
+        android:background="@drawable/bg_button"
+        android:textColor="@color/white"
+        android:fontFamily="@font/nunito_sans"
+        android:layout_marginTop="16dp" />
+
+</LinearLayout>

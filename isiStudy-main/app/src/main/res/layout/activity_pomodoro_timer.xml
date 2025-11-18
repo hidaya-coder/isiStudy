@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_pattern"
+    android:paddingTop="40dp"
+    android:paddingRight="30dp"
+    android:paddingLeft="30dp"
+    android:paddingBottom="60dp"
+    android:gravity="center_horizontal">
+
+
+    <LinearLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_alignParentTop="true">
+
+        <ImageView
+            android:id="@+id/backButton"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/arrow_left"
+            android:contentDescription="Back" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Pomodoro Timer"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:fontFamily="@font/nunito_sans"
+            android:textColor="@color/black" />
+
+
+        <LinearLayout
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="@drawable/bg_circle"
+            android:gravity="center" >
+
+            <ImageView
+                android:id="@+id/musicIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/music_icon"
+                android:contentDescription="Music" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <FrameLayout
+        android:id="@+id/timerContainer"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_centerInParent="true">
+
+        <ProgressBar
+            android:id="@+id/circleProgress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:indeterminate="false"
+            android:max="100"
+            android:progress="50"
+            android:rotation="-90"
+            android:progressDrawable="@drawable/circle_progress"
+            android:background="@null" />
+
+        <TextView
+            android:id="@+id/timerText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="05:00"
+            android:textColor="@color/black"
+            android:fontFamily="@font/nunito_sans"
+            android:textSize="48sp"
+            android:textStyle="bold"
+            android:layout_gravity="center" />
+    </FrameLayout>
+
+
+    <Button
+        android:id="@+id/stopButton"
+        android:layout_width="116dp"
+        android:layout_height="wrap_content"
+        android:text="Stop"
+        android:textColor="@android:color/white"
+        android:fontFamily="@font/nunito_sans"
+        android:textSize="24sp"
+        android:background="@drawable/bg_button"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+</RelativeLayout>

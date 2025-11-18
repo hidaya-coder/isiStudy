@@ -1,10 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddNote">
+    android:orientation="vertical"
+    android:background="@drawable/bg_pattern"
+    android:padding="24dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- Header -->
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nouvelle Note"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#333333"
+        android:gravity="center"
+        android:fontFamily="@font/nunito_sans"
+        android:layout_marginBottom="20dp" />
+
+    <!-- Boutons pour ajouter des images -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="16dp"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/addImageButton"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_weight="1"
+            android:text="📁 Galerie"
+            android:textSize="14sp"
+            android:background="@drawable/bg_button"
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/nunito_sans"
+            android:layout_marginEnd="4dp" />
+
+        <Button
+            android:id="@+id/takePhotoButton"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_weight="1"
+            android:text="📷 Photo"
+            android:textSize="14sp"
+            android:background="@drawable/bg_button"
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/nunito_sans"
+            android:layout_marginStart="4dp" />
+
+    </LinearLayout>
+
+    <!-- Image sélectionnée -->
+    <ImageView
+        android:id="@+id/noteImageView"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginBottom="16dp"
+        android:scaleType="centerCrop"
+        android:background="@android:color/darker_gray"
+        android:visibility="gone"
+        android:contentDescription="Image de la note" />
+
+    <!-- Zone de texte pour la note -->
+    <EditText
+        android:id="@+id/noteEditText"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:hint="Écrivez votre note ici..."
+        android:textSize="18sp"
+        android:gravity="top"
+        android:background="@android:color/white"
+        android:padding="20dp"
+        android:minHeight="200dp"
+        android:inputType="textMultiLine"
+        android:maxLines="15"
+        android:scrollbars="vertical"
+        android:fontFamily="@font/nunito_sans"
+        android:elevation="4dp" />
+
+    <!-- Boutons Actions -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:text="Annuler"
+            android:textSize="16sp"
+            android:background="@drawable/bg_button"
+            android:textColor="@color/white"
+            android:fontFamily="@font/nunito_sans"
+            android:layout_marginEnd="8dp" />
+
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:text="Enregistrer"
+            android:textSize="16sp"
+            android:background="@drawable/bg_button"
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/nunito_sans"
+            android:layout_marginStart="8dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

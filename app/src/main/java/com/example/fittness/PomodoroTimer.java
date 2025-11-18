@@ -2,18 +2,21 @@ package com.example.fittness;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class Home extends AppCompatActivity {
+public class PomodoroTimer extends AppCompatActivity {
 
     private TextView timerText;
     private ProgressBar progressBar;
     private Button startButton;
+
 
     private CountDownTimer countDownTimer;
     private boolean isRunning = false;
@@ -30,6 +33,15 @@ public class Home extends AppCompatActivity {
         startButton = findViewById(R.id.stopButton);
 
         progressBar.setMax(totalTimeInMillis / 1000);
+
+        ImageView back = (ImageView) findViewById(R.id.backButton);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PomodoroTimer.this, TodoList.class);
+                startActivity(intent);
+            }
+        });
 
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,4 +121,8 @@ public class Home extends AppCompatActivity {
             isRunning = true;
         }
     }
+
+
+
+
 }

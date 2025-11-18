@@ -2,25 +2,74 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Permissions de base -->
+    <uses-permission android:name="android.permission.CAMERA" /> <!-- Permissions stockage pour Android < 10 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- Pour Android 10 (API 29) -->
+    <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" /> <!-- Pour Android 13+ (API 33) -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" /> <!-- Fonctionnalités caméra - required="false" -->
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.flash"
+        android:required="false" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.IsiStudyApp"
+        tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="31">
+        <service
+            android:name=".ImageImportServic"
+            android:enabled="true"
+            android:exported="true"></service>
+        <!-- Service d'import d'images -->
+        <service
+            android:name=".ImageImportService"
+            android:enabled="true"
+            android:exported="false" /> <!-- Provider pour la caméra -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
         <activity
-            android:name=".Home"
-            android:exported="false" />
+            android:name=".AddNote"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TodoList"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PomodoroTimer"
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Login"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
