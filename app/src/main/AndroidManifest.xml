@@ -31,10 +31,6 @@
         android:theme="@style/Theme.IsiStudyApp"
         tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="31">
-        <service
-            android:name=".ImageImportServic"
-            android:enabled="true"
-            android:exported="true"></service>
         <!-- Service d'import d'images -->
         <service
             android:name=".ImageImportService"
