@@ -20,6 +20,7 @@ public class PomodoroTimerActivity extends AppCompatActivity implements Pomodoro
     private Button stopButton;
     private Button settingsButton;
     private View backButton;
+    private TextView taskTitleText;
 
     private PomodoroTimer pomodoroTimer;
     private SharedPreferences prefs;
@@ -51,6 +52,7 @@ public class PomodoroTimerActivity extends AppCompatActivity implements Pomodoro
 
         // Get linked task ID if provided
         linkedTaskId = getIntent().getLongExtra("taskId", -1);
+        String taskTitle = getIntent().getStringExtra("taskTitle");
 
         circularProgressView = findViewById(R.id.circularProgressView);
         timerText = findViewById(R.id.timerText);
@@ -59,6 +61,18 @@ public class PomodoroTimerActivity extends AppCompatActivity implements Pomodoro
         stopButton = findViewById(R.id.stopButton);
         settingsButton = findViewById(R.id.settingsButton);
         backButton = findViewById(R.id.backButton);
+        taskTitleText = findViewById(R.id.taskTitleText);
+
+        if (taskTitle != null && !taskTitle.isEmpty()) {
+            taskTitleText.setText(taskTitle);
+            taskTitleText.setVisibility(View.VISIBLE);
+        } else if (linkedTaskId != -1) {
+            Task task = taskManager.getTaskById(linkedTaskId);
+            if (task != null) {
+                taskTitleText.setText(task.getTitle());
+                taskTitleText.setVisibility(View.VISIBLE);
+            }
+        }
 
         // Initialize timer with saved or default values
         long focusMs = prefs.getLong(KEY_FOCUS_DURATION, 25 * 60 * 1000);

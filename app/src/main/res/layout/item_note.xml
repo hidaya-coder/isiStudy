@@ -3,69 +3,93 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
     app:cardCornerRadius="12dp"
     app:cardElevation="4dp"
-    android:backgroundTint="#F5F5F5">
+    android:backgroundTint="@color/white">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:orientation="horizontal"
+        android:minHeight="100dp">
 
-        <TextView
-            android:id="@+id/noteTitle"
-            android:layout_width="0dp"
+        <!-- Left Stripe -->
+        <View
+            android:layout_width="6dp"
+            android:layout_height="match_parent"
+            android:background="@color/primary" />
+
+        <!-- Content -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toStartOf="@+id/deleteNoteButton"
-            android:layout_alignParentStart="true"
-            android:text="Note Title"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:fontFamily="@font/nunito_sans"
-            android:textColor="@color/black"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp" />
+            android:orientation="vertical"
+            android:padding="16dp">
 
-        <TextView
-            android:id="@+id/noteContent"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/noteTitle"
-            android:layout_toStartOf="@+id/deleteNoteButton"
-            android:layout_alignParentStart="true"
-            android:text="Note content goes here..."
-            android:textSize="14sp"
-            android:fontFamily="@font/nunito_sans"
-            android:textColor="#424242"
-            android:maxLines="3"
-            android:ellipsize="end"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="8dp">
 
-        <TextView
-            android:id="@+id/noteDate"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/noteContent"
-            android:layout_toStartOf="@+id/deleteNoteButton"
-            android:layout_alignParentStart="true"
-            android:text="Date"
-            android:textSize="12sp"
-            android:fontFamily="@font/nunito_sans"
-            android:textColor="#757575"
-            android:layout_marginEnd="8dp" />
+                <TextView
+                    android:id="@+id/noteTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Note Title"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/nunito_sans"
+                    android:textColor="@color/black" />
 
-        <ImageButton
-            android:id="@+id/deleteNoteButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-            android:src="@android:drawable/ic_delete"
-            android:background="?android:attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Delete Note"
-            app:tint="#757575" />
-    </RelativeLayout>
+                <!-- Delete Button -->
+                <ImageButton
+                    android:id="@+id/deleteNoteButton"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@android:drawable/ic_menu_close_clear_cancel"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    app:tint="@color/black" />
+            </LinearLayout>
 
+            <TextView
+                android:id="@+id/noteContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Note content..."
+                android:textSize="14sp"
+                android:fontFamily="@font/nunito_sans"
+                android:textColor="#424242"
+                android:maxLines="3"
+                android:ellipsize="end"
+                android:layout_marginBottom="12dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@android:drawable/ic_menu_my_calendar"
+                    app:tint="@color/primary"
+                    android:layout_marginEnd="4dp" />
+
+                <TextView
+                    android:id="@+id/noteDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Date"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/nunito_sans"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
 </androidx.cardview.widget.CardView>

@@ -74,7 +74,7 @@ public class AddNote extends AppCompatActivity {
         String content = contentEdit.getText().toString().trim();
 
         if (title.isEmpty()) {
-            Toast.makeText(this, "Le titre de la note ne peut pas être vide", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Note title cannot be empty", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -86,7 +86,7 @@ public class AddNote extends AppCompatActivity {
             noteManager.addNote(title, content);
         }
 
-        Toast.makeText(this, "Note sauvegardée", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Note saved", Toast.LENGTH_SHORT).show();
         finish();
     }
 }

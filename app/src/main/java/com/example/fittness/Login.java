@@ -32,11 +32,11 @@ public class Login extends AppCompatActivity {
                 boolean correct = true;
 
                 if (email.isEmpty()) {
-                    editEmail.setError("Email est requis");
+                    editEmail.setError("Email is required");
                     correct = false;
                 }
                 if (password.isEmpty()) {
-                    editPassword.setError("Mot de passe est requis");
+                    editPassword.setError("Password is required");
                     correct = false;
                 }
 
@@ -58,7 +58,7 @@ public class Login extends AppCompatActivity {
                     finish();
 
                     // 6. Message de confirmation
-                    Toast.makeText(Login.this, "Connexion réussie!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Login.this, "Login successful!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
