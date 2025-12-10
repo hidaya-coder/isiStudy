@@ -69,10 +69,10 @@ public class Home extends AppCompatActivity implements TaskAdapter.OnTaskClickLi
             // Afficher le message de bienvenue
             if (displayEmail != null && !displayEmail.isEmpty()) {
                 String name = displayEmail.split("@")[0];
-                userNameText.setText("Bonjour, " + name + "!");
+                userNameText.setText("Hello, " + name + "!");
                 Log.d(TAG, "Nom affiché: " + name);
             } else {
-                userNameText.setText("Bonjour, Utilisateur!");
+                userNameText.setText("Hello, User!");
                 Log.w(TAG, "⚠️ Aucun email trouvé");
             }
 
@@ -148,7 +148,7 @@ public class Home extends AppCompatActivity implements TaskAdapter.OnTaskClickLi
         // Vérifier à nouveau l'authentification
         if (!AuthHelper.isLoggedIn(this)) {
             Log.d(TAG, "❌ Utilisateur déconnecté");
-            Toast.makeText(this, "Session expirée", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Session expired", Toast.LENGTH_SHORT).show();
             AuthHelper.requireLogin(this);
             return;
         }
@@ -202,7 +202,7 @@ public class Home extends AppCompatActivity implements TaskAdapter.OnTaskClickLi
         Log.d(TAG, "🗑️ Tâche supprimée: " + task.getTitle());
         taskManager.deleteTask(task);
         refreshTasks();
-        Toast.makeText(this, "Tâche supprimée", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Task deleted", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -236,6 +236,6 @@ public class Home extends AppCompatActivity implements TaskAdapter.OnTaskClickLi
         Log.d(TAG, "🗑️ Note supprimée");
         noteManager.deleteNote(note);
         refreshNotes();
-        Toast.makeText(this, "Note supprimée", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Note deleted", Toast.LENGTH_SHORT).show();
     }
 }

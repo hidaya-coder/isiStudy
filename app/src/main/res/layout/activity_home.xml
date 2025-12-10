@@ -19,13 +19,23 @@
         android:layout_alignParentTop="true"
         android:layout_marginBottom="30dp">
 
-        <ImageView
-            android:id="@+id/personIcon"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@android:drawable/ic_menu_myplaces"
-            android:contentDescription="Person"
-            android:layout_marginEnd="12dp" />
+        <LinearLayout
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/bg_circle"
+            android:backgroundTint="@color/white"
+            android:gravity="center"
+            android:layout_marginEnd="16dp"
+            android:elevation="4dp">
+
+            <ImageView
+                android:id="@+id/personIcon"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@android:drawable/ic_menu_myplaces"
+                android:contentDescription="Person"
+                app:tint="@color/primary" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
@@ -37,17 +47,17 @@
                 android:id="@+id/hiText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Hi"
+                android:text="Hi,"
                 android:textSize="18sp"
                 android:fontFamily="@font/nunito_sans"
-                android:textColor="@color/black" />
+                android:textColor="#757575" />
 
             <TextView
                 android:id="@+id/userNameText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="User"
-                android:textSize="24sp"
+                android:textSize="26sp"
                 android:textStyle="bold"
                 android:fontFamily="@font/nunito_sans"
                 android:textColor="@color/black" />

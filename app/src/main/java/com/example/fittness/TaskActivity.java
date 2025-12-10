@@ -63,6 +63,9 @@ public class TaskActivity extends AppCompatActivity {
 
         // Date Picker
         dateEdit.setOnClickListener(v -> showDatePicker());
+
+        // Time Picker
+        timeEdit.setOnClickListener(v -> showTimePicker());
     }
 
     private void showDatePicker() {
@@ -80,6 +83,24 @@ public class TaskActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
+    private void showTimePicker() {
+        final java.util.Calendar c = java.util.Calendar.getInstance();
+        int hour = c.get(java.util.Calendar.HOUR_OF_DAY);
+        int minute = c.get(java.util.Calendar.MINUTE);
+
+        // Use THEME_HOLO_LIGHT for spinner style (scrolling)
+        android.app.TimePickerDialog timePickerDialog = new android.app.TimePickerDialog(this,
+                android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
+                (view, hourOfDay, minute1) -> {
+                    String time = String.format(java.util.Locale.getDefault(), "%02d:%02d", hourOfDay, minute1);
+                    timeEdit.setText(time);
+                }, hour, minute, true);
+        
+        // Ensure the background is not transparent if using Holo theme on some devices
+        timePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        timePickerDialog.show();
+    }
+
     private void setupEditMode() {
         // Récupérer la tâche à éditer
         currentTask = taskManager.getTaskById(taskId);
@@ -94,7 +115,7 @@ public class TaskActivity extends AppCompatActivity {
             // Afficher le bouton Pomodoro
             startPomodoroButton.setVisibility(View.VISIBLE);
         } else {
-            Toast.makeText(this, "Tâche non trouvée", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Task not found", Toast.LENGTH_SHORT).show();
             finish();
         }
     }
@@ -122,7 +143,7 @@ public class TaskActivity extends AppCompatActivity {
             if (currentTask != null) {
                 startPomodoro();
             } else {
-                Toast.makeText(this, "Veuillez d'abord sauvegarder la tâche", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Please save the task first", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -131,7 +152,7 @@ public class TaskActivity extends AppCompatActivity {
         // Valider les données
         String title = titleEdit.getText().toString().trim();
         if (title.isEmpty()) {
-            Toast.makeText(this, "Le titre est requis", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Title is required", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -145,7 +166,7 @@ public class TaskActivity extends AppCompatActivity {
                 estMinutes = Integer.parseInt(minutesStr);
             }
         } catch (NumberFormatException e) {
-            Toast.makeText(this, "Minutes estimées invalides", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Invalid estimated minutes", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -156,11 +177,11 @@ public class TaskActivity extends AppCompatActivity {
             currentTask.setDueTime(time);
             currentTask.setEstimatedMinutes(estMinutes);
             taskManager.updateTask(currentTask);
-            Toast.makeText(this, "Tâche mise à jour", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Task updated", Toast.LENGTH_SHORT).show();
         } else {
             // Créer une nouvelle tâche
             taskManager.addTaskWithDetails(title, date, time, estMinutes);
-            Toast.makeText(this, "Tâche créée", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Task created", Toast.LENGTH_SHORT).show();
         }
 
         finish();
