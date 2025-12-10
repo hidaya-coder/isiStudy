@@ -1,6 +1,5 @@
 package com.example.fittness;
 
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,7 +31,6 @@ public class Home extends AppCompatActivity implements TaskAdapter.OnTaskClickLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         Log.d(TAG, "Home onCreate started");
         // Récupérer l'email connecté
@@ -131,6 +129,45 @@ public class Home extends AppCompatActivity implements TaskAdapter.OnTaskClickLi
                 startActivity(intent);
             }
         });
+
+        // View All Tasks
+        TextView viewAllTasks = findViewById(R.id.viewAllTasks);
+        if (viewAllTasks != null) {
+            viewAllTasks.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(Home.this, TodoList.class);
+                    startActivity(intent);
+                }
+            });
+        }
+
+        // View All Notes
+        TextView viewAllNotes = findViewById(R.id.viewAllNotes);
+        if (viewAllNotes != null) {
+            viewAllNotes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(Home.this, NotesListActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
+
+        // Logout Button
+        View logoutButton = findViewById(R.id.logoutButton);
+        if (logoutButton != null) {
+            logoutButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AuthHelper.setLoggedOut(Home.this);
+                    Intent intent = new Intent(Home.this, Login.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+        }
     }
 
     @Override
