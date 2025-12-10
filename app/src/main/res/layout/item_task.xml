@@ -60,7 +60,7 @@
                     android:layout_height="15dp"
                     android:src="@android:drawable/ic_menu_edit"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
-                    app:tint="@color/primary"
+                    app:tint="@color/black"
                     android:layout_marginEnd="12dp" />
 
                 <ImageButton
@@ -69,7 +69,7 @@
                     android:layout_height="15dp"
                     android:src="@android:drawable/ic_menu_close_clear_cancel"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
-                    app:tint="@color/primary" />
+                    app:tint="@color/black" />
             </LinearLayout>
 
             <!-- data Row -->
