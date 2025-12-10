@@ -7,26 +7,30 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.List;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
 
     public interface OnTaskClickListener {
-        void onTaskChecked(int index, boolean isChecked);
-        void onTaskDeleted(int index);
-        void onTaskClicked(int index);
+        void onTaskChecked(Task task, boolean isChecked);
+        void onTaskDeleted(Task task);
+        void onStartPomodoro(Task task);
+        void onTaskClicked(Task task);
     }
 
-    private final List<TodoList.TaskInfo> tasks;
+    private List<Task> tasks;
     private final OnTaskClickListener listener;
 
-    public TaskAdapter(List<TodoList.TaskInfo> tasks, OnTaskClickListener listener) {
+    public TaskAdapter(List<Task> tasks, OnTaskClickListener listener) {
         this.tasks = tasks;
         this.listener = listener;
+    }
+
+    public void setTasks(List<Task> updatedTasks) {
+        this.tasks = updatedTasks;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -39,40 +43,100 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
-        holder.bind(tasks.get(position), position);
+        holder.bind(tasks.get(position));
     }
 
     @Override
-    public int getItemCount() { return tasks.size(); }
+    public int getItemCount() {
+        return tasks != null ? tasks.size() : 0;
+    }
 
     class TaskViewHolder extends RecyclerView.ViewHolder {
         CheckBox taskCheckBox;
         TextView taskTitle, dueDateText, dueTimeText, estimatedMinutesText;
         ImageButton deleteButton;
-        Button openTaskButton;
+        Button startPomodoroButton;
 
         public TaskViewHolder(@NonNull View itemView) {
             super(itemView);
             taskCheckBox = itemView.findViewById(R.id.taskCheckBox);
             taskTitle = itemView.findViewById(R.id.taskTitle);
-            dueDateText = itemView.findViewById(R.id.taskDateEditText);
+            dueDateText = itemView.findViewById(R.id.dueDateText); // CORRECTION ICI
             dueTimeText = itemView.findViewById(R.id.dueTimeText);
             estimatedMinutesText = itemView.findViewById(R.id.estimatedMinutesText);
             deleteButton = itemView.findViewById(R.id.deleteTaskButton);
-            openTaskButton = itemView.findViewById(R.id.startPomodoroButton);
+            startPomodoroButton = itemView.findViewById(R.id.startPomodoroButton);
         }
 
-        public void bind(TodoList.TaskInfo task, int index) {
-            taskCheckBox.setOnCheckedChangeListener(null);
-            taskCheckBox.setChecked(task.isCompleted);
-            taskTitle.setText(task.title);
-            dueDateText.setText(task.dueDate);
-            dueTimeText.setText(task.dueTime);
-            estimatedMinutesText.setText(task.estimatedMinutes + " min");
+        public void bind(Task task) {
+            if (task == null) return;
 
-            taskCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> listener.onTaskChecked(index, isChecked));
-            deleteButton.setOnClickListener(v -> listener.onTaskDeleted(index));
-            openTaskButton.setOnClickListener(v -> listener.onTaskClicked(index));
+            // Reset listener
+            taskCheckBox.setOnCheckedChangeListener(null);
+
+            // Bind data
+            taskCheckBox.setChecked(task.isCompleted());
+            taskTitle.setText(task.getTitle());
+
+            // Set date - handle null or empty
+            if (task.getDueDate() != null && !task.getDueDate().isEmpty()) {
+                dueDateText.setText(task.getDueDate());
+            } else {
+                dueDateText.setText("Non définie");
+            }
+
+            // Set time - handle null or empty
+            if (task.getDueTime() != null && !task.getDueTime().isEmpty()) {
+                dueTimeText.setText(task.getDueTime());
+            } else {
+                dueTimeText.setText("Non définie");
+            }
+
+            // Set estimated minutes
+            if (task.getEstimatedMinutes() > 0) {
+                estimatedMinutesText.setText(task.getEstimatedMinutes() + " min");
+            } else {
+                estimatedMinutesText.setText("Non définie");
+            }
+
+            // Apply strike-through for completed tasks
+            if (task.isCompleted()) {
+                taskTitle.setPaintFlags(taskTitle.getPaintFlags() | android.graphics.Paint.STRIKE_THRU_TEXT_FLAG);
+                dueDateText.setPaintFlags(dueDateText.getPaintFlags() | android.graphics.Paint.STRIKE_THRU_TEXT_FLAG);
+                dueTimeText.setPaintFlags(dueTimeText.getPaintFlags() | android.graphics.Paint.STRIKE_THRU_TEXT_FLAG);
+                estimatedMinutesText.setPaintFlags(estimatedMinutesText.getPaintFlags() | android.graphics.Paint.STRIKE_THRU_TEXT_FLAG);
+            } else {
+                taskTitle.setPaintFlags(taskTitle.getPaintFlags() & ~android.graphics.Paint.STRIKE_THRU_TEXT_FLAG);
+                dueDateText.setPaintFlags(dueDateText.getPaintFlags() & ~android.graphics.Paint.STRIKE_THRU_TEXT_FLAG);
+                dueTimeText.setPaintFlags(dueTimeText.getPaintFlags() & ~android.graphics.Paint.STRIKE_THRU_TEXT_FLAG);
+                estimatedMinutesText.setPaintFlags(estimatedMinutesText.getPaintFlags() & ~android.graphics.Paint.STRIKE_THRU_TEXT_FLAG);
+            }
+
+            // Listeners
+            taskCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (listener != null) {
+                    listener.onTaskChecked(task, isChecked);
+                }
+            });
+
+            deleteButton.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onTaskDeleted(task);
+                }
+            });
+
+            startPomodoroButton.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onStartPomodoro(task);
+                }
+            });
+
+            // Clic sur tout l'item pour éditer
+            itemView.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onTaskClicked(task);
+                }
+            });
         }
     }
 }

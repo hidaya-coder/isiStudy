@@ -1,112 +1,225 @@
 package com.example.fittness;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
-public class Home extends AppCompatActivity {
-
-    private TextView timerText;
-    private ProgressBar progressBar;
-    private Button startButton;
-
-    private CountDownTimer countDownTimer;
-    private boolean isRunning = false;
-    private final int totalTimeInMillis = 5 * 60 * 1000;
-    private int secondsPassed = 0;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pomodoro_timer);
-
-        timerText = findViewById(R.id.timerText);
-        progressBar = findViewById(R.id.circleProgress);
-        startButton = findViewById(R.id.stopButton);
-
-        progressBar.setMax(totalTimeInMillis / 1000);
-
-        startButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (countDownTimer != null) {
-                    countDownTimer.cancel();
-                }
-
-                secondsPassed = 0;
-                progressBar.setProgress(0);
-                timerText.setText("05:00");
-
-                int remainingMillis = totalTimeInMillis;
-                int finalRemainingMillis = remainingMillis;
-
-                countDownTimer = new CountDownTimer(finalRemainingMillis, 1000) {
-                    @Override
-                    public void onTick(long millisUntilFinished) {
-                        int minutes = (int) (millisUntilFinished / 1000) / 60;
-                        int seconds = (int) (millisUntilFinished / 1000) % 60;
-
-                        String time = String.format("%02d:%02d", minutes, seconds);
-                        timerText.setText(time);
-
-                        secondsPassed++;
-                        progressBar.setProgress(secondsPassed);
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        timerText.setText("00:00");
-                        isRunning = false;
-                    }
-                }.start();
-
-                isRunning = true;
-            }
-        });
+public class PomodoroTimer {
+    public enum TimerState {
+        STOPPED, RUNNING, PAUSED
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
+    public enum TimerMode {
+        FOCUS, SHORT_REST, LONG_REST
+    }
+
+    private TimerState state = TimerState.STOPPED;
+    private TimerMode currentMode = TimerMode.FOCUS;
+    private long remainingMillis = 0;
+    private long totalMillis = 0;
+    private CountDownTimer countDownTimer;
+    private TimerListener listener;
+    private int cyclesCompleted = 0;
+    private int cyclesBeforeLongRest = 4;
+
+    // Default durations in milliseconds
+    private long focusDurationMs = 25 * 60 * 1000; // 25 minutes
+    private long shortRestDurationMs = 5 * 60 * 1000; // 5 minutes
+    private long longRestDurationMs = 20 * 60 * 1000; // 20 minutes
+
+    public interface TimerListener {
+        void onTick(long remainingMillis, float progress);
+        void onFinish();
+        void onModeChanged(TimerMode newMode);
+    }
+
+    public PomodoroTimer(TimerListener listener) {
+        this.listener = listener;
+        this.totalMillis = focusDurationMs;
+        this.remainingMillis = focusDurationMs;
+    }
+
+    public void setDurations(long focusMs, long shortRestMs, long longRestMs) {
+        this.focusDurationMs = focusMs;
+        this.shortRestDurationMs = shortRestMs;
+        this.longRestDurationMs = longRestMs;
+        
+        // If timer is stopped, update current mode duration
+        if (state == TimerState.STOPPED) {
+            updateDurationForCurrentMode();
+        }
+    }
+
+    public void setCyclesBeforeLongRest(int cycles) {
+        this.cyclesBeforeLongRest = cycles;
+    }
+
+    public void start() {
+        if (state == TimerState.RUNNING) {
+            return;
+        }
+
+        if (state == TimerState.PAUSED) {
+            resume();
+            return;
+        }
+
+        // Starting fresh
+        state = TimerState.RUNNING;
+        updateDurationForCurrentMode();
+        remainingMillis = totalMillis;
+
+        startCountDown();
+    }
+
+    public void pause() {
+        if (state != TimerState.RUNNING) {
+            return;
+        }
+
         if (countDownTimer != null) {
             countDownTimer.cancel();
         }
-        isRunning = false;
+        state = TimerState.PAUSED;
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (secondsPassed > 0 && secondsPassed < totalTimeInMillis / 1000) {
-            int remainingMillis = totalTimeInMillis - (secondsPassed * 1000);
-            int finalRemainingMillis = remainingMillis;
-
-            countDownTimer = new CountDownTimer(finalRemainingMillis, 1000) {
-                @Override
-                public void onTick(long millisUntilFinished) {
-                    int minutes = (int) (millisUntilFinished / 1000) / 60;
-                    int seconds = (int) (millisUntilFinished / 1000) % 60;
-
-                    String time = String.format("%02d:%02d", minutes, seconds);
-                    timerText.setText(time);
-
-                    secondsPassed++;
-                    progressBar.setProgress(secondsPassed);
-                }
-
-                @Override
-                public void onFinish() {
-                    timerText.setText("00:00");
-                    isRunning = false;
-                }
-            }.start();
-
-            isRunning = true;
+    public void resume() {
+        if (state != TimerState.PAUSED) {
+            return;
         }
+
+        state = TimerState.RUNNING;
+        startCountDown();
+    }
+
+    public void stop() {
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
+        state = TimerState.STOPPED;
+        updateDurationForCurrentMode();
+        remainingMillis = totalMillis;
+        
+        if (listener != null) {
+            float progress = 0f;
+            listener.onTick(remainingMillis, progress);
+        }
+    }
+
+    public void reset() {
+        stop();
+        cyclesCompleted = 0;
+        currentMode = TimerMode.FOCUS;
+        updateDurationForCurrentMode();
+        remainingMillis = totalMillis;
+        
+        if (listener != null) {
+            listener.onModeChanged(currentMode);
+            listener.onTick(remainingMillis, 0f);
+        }
+    }
+
+    private void startCountDown() {
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
+
+        countDownTimer = new CountDownTimer(remainingMillis, 100) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                remainingMillis = millisUntilFinished;
+                float progress = 1.0f - ((float) millisUntilFinished / (float) totalMillis);
+                
+                if (listener != null) {
+                    listener.onTick(millisUntilFinished, progress);
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                remainingMillis = 0;
+                state = TimerState.STOPPED;
+                
+                if (listener != null) {
+                    listener.onTick(0, 1.0f);
+                    listener.onFinish();
+                }
+
+                // Auto-advance to next mode
+                advanceToNextMode();
+            }
+        };
+
+        countDownTimer.start();
+    }
+
+    private void advanceToNextMode() {
+        if (currentMode == TimerMode.FOCUS) {
+            cyclesCompleted++;
+            if (cyclesCompleted >= cyclesBeforeLongRest) {
+                currentMode = TimerMode.LONG_REST;
+                cyclesCompleted = 0;
+            } else {
+                currentMode = TimerMode.SHORT_REST;
+            }
+        } else {
+            currentMode = TimerMode.FOCUS;
+        }
+
+        updateDurationForCurrentMode();
+        remainingMillis = totalMillis;
+
+        if (listener != null) {
+            listener.onModeChanged(currentMode);
+        }
+    }
+
+    private void updateDurationForCurrentMode() {
+        switch (currentMode) {
+            case FOCUS:
+                totalMillis = focusDurationMs;
+                break;
+            case SHORT_REST:
+                totalMillis = shortRestDurationMs;
+                break;
+            case LONG_REST:
+                totalMillis = longRestDurationMs;
+                break;
+        }
+    }
+
+    // Getters
+    public TimerState getState() {
+        return state;
+    }
+
+    public TimerMode getCurrentMode() {
+        return currentMode;
+    }
+
+    public long getRemainingMillis() {
+        return remainingMillis;
+    }
+
+    public long getTotalMillis() {
+        return totalMillis;
+    }
+
+    public int getCyclesCompleted() {
+        return cyclesCompleted;
+    }
+
+    public void setState(TimerState state) {
+        this.state = state;
+    }
+
+    public void setCurrentMode(TimerMode mode) {
+        this.currentMode = mode;
+        updateDurationForCurrentMode();
+        if (state == TimerState.STOPPED) {
+            remainingMillis = totalMillis;
+        }
+    }
+
+    public void setRemainingMillis(long millis) {
+        this.remainingMillis = millis;
     }
 }
