@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp"
+    android:backgroundTint="@android:color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Header: Checkbox, Title, Delete -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="12dp">
+
+            <CheckBox
+                android:id="@+id/taskCheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:buttonTint="@color/primary" />
+
+            <TextView
+                android:id="@+id/taskTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Task Title"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/nunito_sans"
+                android:textColor="@color/black" />
+
+            <ImageButton
+                android:id="@+id/deleteTaskButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@android:drawable/ic_delete"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Delete Task"
+                app:tint="#757575" />
+        </LinearLayout>
+
+        <!-- Details: Date, Time -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="📅 "
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/dueDateText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No Date"
+                android:textSize="14sp"
+                android:fontFamily="@font/nunito_sans"
+                android:textColor="#757575"
+                android:layout_marginEnd="16dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🕒 "
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/dueTimeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No Time"
+                android:textSize="14sp"
+                android:fontFamily="@font/nunito_sans"
+                android:textColor="#757575" />
+        </LinearLayout>
+
+        <!-- Estimated Time -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Estimated: "
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:fontFamily="@font/nunito_sans"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/estimatedMinutesText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0 min"
+                android:textSize="14sp"
+                android:fontFamily="@font/nunito_sans"
+                android:textColor="#757575" />
+        </LinearLayout>
+
+        <!-- Start Pomodoro Button -->
+        <Button
+            android:id="@+id/startPomodoroButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Start Pomodoro"
+            android:textColor="@android:color/white"
+            android:background="@drawable/bg_button"
+            android:fontFamily="@font/nunito_sans"
+            android:textSize="16sp"
+            android:textAllCaps="false" />
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

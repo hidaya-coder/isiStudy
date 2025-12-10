@@ -4,18 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Toast;
 
 public class Login extends AppCompatActivity {
 
     private EditText editEmail;
     private EditText editPassword;
     private Button btnLogin;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,20 +30,36 @@ public class Login extends AppCompatActivity {
                 String email = editEmail.getText().toString();
                 String password = editPassword.getText().toString();
                 boolean correct = true;
+
                 if (email.isEmpty()) {
-                    editEmail.setError("email is required");
+                    editEmail.setError("Email est requis");
                     correct = false;
                 }
                 if (password.isEmpty()) {
-                    editPassword.setError("password is required");
+                    editPassword.setError("Mot de passe est requis");
                     correct = false;
                 }
 
                 if (correct) {
-                    Intent intent = new Intent(Login.this,Home.class);
-                    startActivity(intent);
-                }
+                    android.util.Log.d("Login", "Credentials valid, attempting login for: " + email);
+                    // 1. SAUVEGARDER LE STATUT DE CONNEXION - AJOUTÉ ICI
+                    AuthHelper.setLoggedIn(Login.this, email);
 
+                    // 2. Créer l'intent pour Home
+                    Intent intent = new Intent(Login.this, Home.class);
+
+                    // 3. Optionnel : passer l'email en extra
+                    intent.putExtra("email", email);
+
+                    // 4. Démarrer Home
+                    startActivity(intent);
+
+                    // 5. IMPORTANT : Fermer l'activité Login
+                    finish();
+
+                    // 6. Message de confirmation
+                    Toast.makeText(Login.this, "Connexion réussie!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
