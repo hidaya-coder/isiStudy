@@ -61,7 +61,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             super(itemView);
             taskCheckBox = itemView.findViewById(R.id.taskCheckBox);
             taskTitle = itemView.findViewById(R.id.taskTitle);
-            dueDateText = itemView.findViewById(R.id.dueDateText); // CORRECTION ICI
+            dueDateText = itemView.findViewById(R.id.dueDateText);
             dueTimeText = itemView.findViewById(R.id.dueTimeText);
             estimatedMinutesText = itemView.findViewById(R.id.estimatedMinutesText);
             deleteButton = itemView.findViewById(R.id.deleteTaskButton);

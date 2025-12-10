@@ -46,13 +46,14 @@
                     android:fontFamily="@font/nunito_sans"
                     android:textColor="@color/black" />
 
+                <!-- Delete Button -->
                 <ImageButton
                     android:id="@+id/deleteNoteButton"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@android:drawable/ic_menu_delete"
+                    android:src="@android:drawable/ic_menu_close_clear_cancel"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
-                    app:tint="#757575" />
+                    app:tint="@color/black" />
             </LinearLayout>
 
             <TextView

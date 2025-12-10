@@ -210,6 +210,7 @@ public class Home extends AppCompatActivity implements TaskAdapter.OnTaskClickLi
         Log.d(TAG, "⏱️ Pomodoro pour: " + task.getTitle());
         Intent intent = new Intent(Home.this, PomodoroTimerActivity.class);
         intent.putExtra("taskId", task.getId());
+        intent.putExtra("taskTitle", task.getTitle());
         startActivity(intent);
     }
 

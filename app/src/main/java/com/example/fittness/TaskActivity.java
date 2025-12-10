@@ -191,6 +191,7 @@ public class TaskActivity extends AppCompatActivity {
         if (currentTask != null) {
             Intent intent = new Intent(this, PomodoroTimerActivity.class);
             intent.putExtra("taskId", currentTask.getId());
+            intent.putExtra("taskTitle", currentTask.getTitle());
             startActivity(intent);
         }
     }
