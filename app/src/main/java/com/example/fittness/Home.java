@@ -101,7 +101,6 @@ public class Home extends AppCompatActivity implements TaskAdapter.OnTaskClickLi
             }
 
         } catch (Exception e) {
-            Log.e(TAG, "💥 Erreur d'initialisation", e);
             Toast.makeText(this, "Erreur: " + e.getMessage(), Toast.LENGTH_LONG).show();
             e.printStackTrace();
             return;
@@ -111,7 +110,6 @@ public class Home extends AppCompatActivity implements TaskAdapter.OnTaskClickLi
         startStudyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "▶️ Démarrage session d'étude");
                 Intent intent = new Intent(Home.this, PomodoroTimerActivity.class);
                 startActivity(intent);
             }
@@ -121,7 +119,6 @@ public class Home extends AppCompatActivity implements TaskAdapter.OnTaskClickLi
         addNoteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "➕ Ajout note");
                 Intent intent = new Intent(Home.this, AddNote.class);
                 startActivity(intent);
             }
@@ -131,7 +128,6 @@ public class Home extends AppCompatActivity implements TaskAdapter.OnTaskClickLi
         addTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "➕ Ajout tâche");
                 Intent intent = new Intent(Home.this, TaskActivity.class);
                 intent.putExtra("isEditMode", false);
                 startActivity(intent);
@@ -142,12 +138,10 @@ public class Home extends AppCompatActivity implements TaskAdapter.OnTaskClickLi
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d(TAG, "Checking login status in onResume");
-        Log.d(TAG, "🔄 Home onResume");
 
         // Vérifier à nouveau l'authentification
         if (!AuthHelper.isLoggedIn(this)) {
-            Log.d(TAG, "❌ Utilisateur déconnecté");
+
             Toast.makeText(this, "Session expired", Toast.LENGTH_SHORT).show();
             AuthHelper.requireLogin(this);
             return;
@@ -207,7 +201,6 @@ public class Home extends AppCompatActivity implements TaskAdapter.OnTaskClickLi
 
     @Override
     public void onStartPomodoro(Task task) {
-        Log.d(TAG, "⏱️ Pomodoro pour: " + task.getTitle());
         Intent intent = new Intent(Home.this, PomodoroTimerActivity.class);
         intent.putExtra("taskId", task.getId());
         intent.putExtra("taskTitle", task.getTitle());
@@ -216,7 +209,6 @@ public class Home extends AppCompatActivity implements TaskAdapter.OnTaskClickLi
 
     @Override
     public void onTaskClicked(Task task) {
-        Log.d(TAG, "✏️ Édition tâche: " + task.getTitle());
         Intent intent = new Intent(Home.this, TaskActivity.class);
         intent.putExtra("isEditMode", true);
         intent.putExtra("taskId", task.getId());
@@ -226,7 +218,6 @@ public class Home extends AppCompatActivity implements TaskAdapter.OnTaskClickLi
     // Implémentation NoteAdapter.OnNoteClickListener
     @Override
     public void onNoteClicked(Note note) {
-        Log.d(TAG, "✏️ Édition note");
         Intent intent = new Intent(Home.this, AddNote.class);
         intent.putExtra("noteId", note.getId());
         startActivity(intent);
@@ -234,7 +225,6 @@ public class Home extends AppCompatActivity implements TaskAdapter.OnTaskClickLi
 
     @Override
     public void onNoteDeleted(Note note) {
-        Log.d(TAG, "🗑️ Note supprimée");
         noteManager.deleteNote(note);
         refreshNotes();
         Toast.makeText(this, "Note deleted", Toast.LENGTH_SHORT).show();
