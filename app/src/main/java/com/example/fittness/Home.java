@@ -4,7 +4,6 @@ package com.example.fittness;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,7 +11,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,7 +67,7 @@ public class Home extends AppCompatActivity implements TaskAdapter.OnTaskClickLi
             // Afficher le message de bienvenue
             if (displayEmail != null && !displayEmail.isEmpty()) {
                 String name = displayEmail.split("@")[0];
-                userNameText.setText("Hello, " + name + "!");
+                userNameText.setText("Welcome, " + name + "!");
                 Log.d(TAG, "Nom affiché: " + name);
             } else {
                 userNameText.setText("Hello, User!");
@@ -141,7 +139,6 @@ public class Home extends AppCompatActivity implements TaskAdapter.OnTaskClickLi
 
         // Vérifier à nouveau l'authentification
         if (!AuthHelper.isLoggedIn(this)) {
-
             Toast.makeText(this, "Session expired", Toast.LENGTH_SHORT).show();
             AuthHelper.requireLogin(this);
             return;
@@ -153,11 +150,9 @@ public class Home extends AppCompatActivity implements TaskAdapter.OnTaskClickLi
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d(TAG, "🚀 Home onStart");
     }
 
     private void refreshData() {
-        Log.d(TAG, "🔄 Rafraîchissement des données");
         refreshTasks();
         refreshNotes();
     }
@@ -165,7 +160,6 @@ public class Home extends AppCompatActivity implements TaskAdapter.OnTaskClickLi
     private void refreshTasks() {
         if (taskAdapter != null && taskManager != null) {
             List<Task> tasks = taskManager.getAllTasks();
-            Log.d(TAG, "📋 Rafraîchissement tâches: " + (tasks != null ? tasks.size() : 0));
             if (tasks != null) {
                 taskAdapter.setTasks(tasks);
             }
@@ -185,7 +179,6 @@ public class Home extends AppCompatActivity implements TaskAdapter.OnTaskClickLi
     // Implémentation TaskAdapter.OnTaskClickListener
     @Override
     public void onTaskChecked(Task task, boolean isChecked) {
-        Log.d(TAG, "✓ Tâche " + (isChecked ? "cochée" : "décochée") + ": " + task.getTitle());
         task.setCompleted(isChecked);
         taskManager.updateTask(task);
         refreshTasks();
@@ -193,7 +186,6 @@ public class Home extends AppCompatActivity implements TaskAdapter.OnTaskClickLi
 
     @Override
     public void onTaskDeleted(Task task) {
-        Log.d(TAG, "🗑️ Tâche supprimée: " + task.getTitle());
         taskManager.deleteTask(task);
         refreshTasks();
         Toast.makeText(this, "Task deleted", Toast.LENGTH_SHORT).show();

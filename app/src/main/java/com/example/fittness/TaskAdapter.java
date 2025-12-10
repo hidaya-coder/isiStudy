@@ -82,21 +82,21 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             if (task.getDueDate() != null && !task.getDueDate().isEmpty()) {
                 dueDateText.setText(task.getDueDate());
             } else {
-                dueDateText.setText("Non définie");
+                dueDateText.setText("DD/MM/YYYY");
             }
 
             // Set time - handle null or empty
             if (task.getDueTime() != null && !task.getDueTime().isEmpty()) {
                 dueTimeText.setText(task.getDueTime());
             } else {
-                dueTimeText.setText("Non définie");
+                dueTimeText.setText("HH:MM");
             }
 
             // Set estimated minutes
             if (task.getEstimatedMinutes() > 0) {
                 estimatedMinutesText.setText(task.getEstimatedMinutes() + " min");
             } else {
-                estimatedMinutesText.setText("Non définie");
+                estimatedMinutesText.setText("0 Min");
             }
 
             // Apply strike-through for completed tasks

@@ -15,20 +15,19 @@
         android:orientation="horizontal"
         android:minHeight="100dp">
 
-        <!-- Left Stripe -->
         <View
             android:layout_width="6dp"
             android:layout_height="match_parent"
             android:background="@color/primary" />
 
-        <!-- Content -->
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Header: Checkbox, Title, Play Button -->
+            <!-- Header-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -64,7 +63,7 @@
                     app:tint="@color/black" />
             </LinearLayout>
 
-            <!-- Metadata Row -->
+            <!-- data Row -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -73,10 +72,10 @@
 
                 <!-- Date -->
                 <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
                     android:src="@android:drawable/ic_menu_my_calendar"
-                    app:tint="@color/black"
+                    app:tint="@color/primary"
                     android:layout_marginEnd="4dp" />
 
                 <TextView
@@ -91,10 +90,10 @@
 
                 <!-- Time -->
                 <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
                     android:src="@android:drawable/ic_menu_recent_history"
-                    app:tint="@color/black"
+                    app:tint="@color/primary"
                     android:layout_marginEnd="4dp" />
 
                 <TextView
@@ -112,7 +111,7 @@
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:src="@android:drawable/ic_lock_idle_alarm"
-                    app:tint="@color/black"
+                    app:tint="@color/primary"
                     android:layout_marginEnd="4dp" />
 
                 <TextView
