@@ -4,7 +4,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,6 +52,18 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         
         SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
         holder.dateText.setText(sdf.format(new Date(note.getTimestamp())));
+        
+        if (note.getImagePath() != null) {
+            Bitmap bitmap = BitmapFactory.decodeFile(note.getImagePath());
+            if (bitmap != null) {
+                holder.imageThumbnail.setImageBitmap(bitmap);
+                holder.imageThumbnail.setVisibility(View.VISIBLE);
+            } else {
+                 holder.imageThumbnail.setVisibility(View.GONE);
+            }
+        } else {
+            holder.imageThumbnail.setVisibility(View.GONE);
+        }
 
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
@@ -78,6 +93,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         TextView contentText;
         TextView dateText;
         ImageButton deleteButton;
+        ImageView imageThumbnail;
 
         NoteViewHolder(View itemView) {
             super(itemView);
@@ -85,6 +101,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             contentText = itemView.findViewById(R.id.noteContent);
             dateText = itemView.findViewById(R.id.noteDate);
             deleteButton = itemView.findViewById(R.id.deleteNoteButton);
+            imageThumbnail = itemView.findViewById(R.id.noteImageThumbnail);
         }
     }
 }

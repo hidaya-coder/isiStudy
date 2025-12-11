@@ -5,12 +5,19 @@ public class Note {
     private String title;
     private String content;
     private long timestamp;
+    private String imagePath;
 
-    public Note(long id, String title, String content, long timestamp) {
+    public Note(long id, String title, String content, long timestamp, String imagePath) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.timestamp = timestamp;
+        this.imagePath = imagePath;
+    }
+    
+    // Constructor for backward compatibility if needed, or just update callers
+    public Note(long id, String title, String content, long timestamp) {
+        this(id, title, content, timestamp, null);
     }
 
     public long getId() {
@@ -43,6 +50,14 @@ public class Note {
 
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 }
 

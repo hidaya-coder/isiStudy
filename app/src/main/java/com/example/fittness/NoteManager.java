@@ -32,7 +32,8 @@ public class NoteManager {
                 String title = obj.getString("title");
                 String content = obj.getString("content");
                 long timestamp = obj.getLong("timestamp");
-                notes.add(new Note(id, title, content, timestamp));
+                String imagePath = obj.optString("imagePath", null);
+                notes.add(new Note(id, title, content, timestamp, imagePath));
                 if (id >= nextId) {
                     nextId = id + 1;
                 }
@@ -43,9 +44,9 @@ public class NoteManager {
         return notes;
     }
 
-    public void addNote(String title, String content) {
+    public void addNote(String title, String content, String imagePath) {
         List<Note> notes = getAllNotes();
-        Note note = new Note(nextId++, title, content, System.currentTimeMillis());
+        Note note = new Note(nextId++, title, content, System.currentTimeMillis(), imagePath);
         notes.add(0, note); // Add at beginning
         saveNotes(notes);
     }
@@ -77,6 +78,9 @@ public class NoteManager {
                 obj.put("title", note.getTitle());
                 obj.put("content", note.getContent());
                 obj.put("timestamp", note.getTimestamp());
+                if (note.getImagePath() != null) {
+                    obj.put("imagePath", note.getImagePath());
+                }
                 jsonArray.put(obj);
             }
             prefs.edit().putString(KEY_NOTES, jsonArray.toString()).apply();
