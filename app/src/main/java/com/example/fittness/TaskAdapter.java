@@ -54,7 +54,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     class TaskViewHolder extends RecyclerView.ViewHolder {
         CheckBox taskCheckBox;
         TextView taskTitle, dueDateText, dueTimeText, estimatedMinutesText;
-        ImageButton deleteButton;
+        ImageButton deleteButton, editButton;
         Button startPomodoroButton;
 
         public TaskViewHolder(@NonNull View itemView) {
@@ -65,6 +65,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             dueTimeText = itemView.findViewById(R.id.dueTimeText);
             estimatedMinutesText = itemView.findViewById(R.id.estimatedMinutesText);
             deleteButton = itemView.findViewById(R.id.deleteTaskButton);
+            editButton = itemView.findViewById(R.id.editTaskButton);
             startPomodoroButton = itemView.findViewById(R.id.startPomodoroButton);
         }
 
@@ -124,6 +125,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                     listener.onTaskDeleted(task);
                 }
             });
+
+            if (editButton != null) {
+                editButton.setOnClickListener(v -> {
+                    if (listener != null) {
+                        listener.onTaskClicked(task);
+                    }
+                });
+            }
 
             startPomodoroButton.setOnClickListener(v -> {
                 if (listener != null) {

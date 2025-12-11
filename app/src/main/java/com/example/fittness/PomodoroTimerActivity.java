@@ -11,6 +11,8 @@ import android.widget.Toast;
 
 import java.util.Locale;
 
+import android.widget.ImageButton;
+
 public class PomodoroTimerActivity extends AppCompatActivity implements PomodoroTimer.TimerListener {
 
     private CircularProgressView circularProgressView;
@@ -18,7 +20,7 @@ public class PomodoroTimerActivity extends AppCompatActivity implements Pomodoro
     private TextView modeText;
     private Button startPauseButton;
     private Button stopButton;
-    private Button settingsButton;
+    private ImageButton settingsButton;
     private View backButton;
     private TextView taskTitleText;
 
