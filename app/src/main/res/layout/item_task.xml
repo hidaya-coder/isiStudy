@@ -56,20 +56,20 @@
 
                 <ImageButton
                     android:id="@+id/editTaskButton"
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:src="@android:drawable/ic_menu_edit"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/edit"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
-                    app:tint="@color/black"
                     android:layout_marginEnd="12dp" />
 
                 <ImageButton
                     android:id="@+id/deleteTaskButton"
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:src="@android:drawable/ic_menu_close_clear_cancel"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/trash"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
-                    app:tint="@color/black" />
+                    app:tint="@color/black"
+                    />
             </LinearLayout>
 
             <!-- data Row -->
@@ -83,7 +83,7 @@
                 <ImageView
                     android:layout_width="18dp"
                     android:layout_height="18dp"
-                    android:src="@android:drawable/ic_menu_my_calendar"
+                    android:src="@drawable/calender"
                     app:tint="@color/primary"
                     android:layout_marginEnd="4dp" />
 
