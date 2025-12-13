@@ -58,6 +58,47 @@
             android:orientation="vertical"
             android:padding="16dp">
 
+            <FrameLayout
+                android:id="@+id/imageContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginBottom="16dp">
+
+                <ImageView
+                    android:id="@+id/noteImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/ic_launcher"/>
+
+                <ImageButton
+                    android:id="@+id/deleteImageButton"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/trash"
+                    android:background="@drawable/bg_circle"
+                    android:backgroundTint="#80000000"
+                    android:padding="4dp"
+                    android:layout_gravity="top|end"
+                    android:layout_margin="8dp"
+                    android:contentDescription="Delete Image"/>
+
+                <ImageButton
+                    android:id="@+id/editImageButton"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/edit"
+                    android:background="@drawable/bg_circle"
+                    android:backgroundTint="#80000000"
+                    android:padding="6dp"
+                    android:layout_gravity="top|end"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="48dp"
+                    android:contentDescription="Edit Image"
+                    app:tint="@color/white"/>
+            </FrameLayout>
+
             <EditText
                 android:id="@+id/noteTitleEdit"
                 android:layout_width="match_parent"
@@ -90,7 +131,7 @@
 
             <Button
                 android:id="@+id/attachImageButton"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Attach Image"
                 android:drawableLeft="@drawable/ic_task"
@@ -99,32 +140,6 @@
                 android:textColor="@android:color/white"
                 android:layout_marginBottom="16dp"/>
 
-            <FrameLayout
-                android:id="@+id/imageContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:layout_marginBottom="16dp">
-
-                <ImageView
-                    android:id="@+id/noteImageView"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:scaleType="centerCrop"
-                    android:src="@mipmap/ic_launcher"/>
-
-                <ImageButton
-                    android:id="@+id/deleteImageButton"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:src="@drawable/trash"
-                    android:background="@drawable/bg_circle"
-                    android:backgroundTint="#80000000"
-                    android:padding="4dp"
-                    android:layout_gravity="top|end"
-                    android:layout_margin="8dp"
-                    android:contentDescription="Delete Image"/>
-            </FrameLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

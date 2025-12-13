@@ -51,9 +51,7 @@
                     android:id="@+id/deleteNoteButton"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/trash"
-                    android:background="?android:attr/selectableItemBackgroundBorderless"
-                    app:tint="@color/black" />
+                    android:src="@drawable/trash" />
             </LinearLayout>
 
             <TextView

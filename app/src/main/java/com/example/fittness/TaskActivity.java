@@ -157,13 +157,25 @@ public class TaskActivity extends AppCompatActivity {
         }
 
         String date = dateEdit.getText().toString().trim();
+        if (date.isEmpty()) {
+            Toast.makeText(this, "Date is required", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         String time = timeEdit.getText().toString().trim();
+        if (time.isEmpty()) {
+            Toast.makeText(this, "Time is required", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         int estMinutes = 0;
         try {
             String minutesStr = estMinutesEdit.getText().toString().trim();
             if (!minutesStr.isEmpty()) {
                 estMinutes = Integer.parseInt(minutesStr);
+            } else {
+                 Toast.makeText(this, "Duration is required", Toast.LENGTH_SHORT).show();
+                 return;
             }
         } catch (NumberFormatException e) {
             Toast.makeText(this, "Invalid estimated minutes", Toast.LENGTH_SHORT).show();

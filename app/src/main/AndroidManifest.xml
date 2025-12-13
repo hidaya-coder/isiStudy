@@ -17,6 +17,11 @@
         android:theme="@style/Theme.IsiStudyApp"
         tools:targetApi="31">
         
+        <service
+            android:name=".ImageService"
+            android:enabled="true"
+            android:exported="false" />
+        
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"

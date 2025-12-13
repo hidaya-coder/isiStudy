@@ -17,7 +17,37 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class ImageService {
+import android.app.Service;
+import android.os.Binder;
+import android.os.IBinder;
+import android.util.Log;
+
+public class ImageService extends Service {
+
+    private final IBinder binder = new LocalBinder();
+
+    public class LocalBinder extends Binder {
+        public ImageService getService() {
+            return ImageService.this;
+        }
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return binder;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        Log.v("ImageService", "the service is alive!!!");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.v("ImageService", "the service in this place is dead man!");
+    }
 
     public ImageService() {
     }
@@ -76,16 +106,10 @@ public class ImageService {
             return null;
         }
     }
-    
-    // Helper to copy the temporary camera file to internal storage explicitly if needed, 
-    // or we can just use the file in ExternalFilesDir. 
-    // However, user requirement says "save permanently... e.g. internal private storage".
-    // ExternalFilesDir IS internal to the user (removed on uninstall) but technically "External storage" emulation.
-    // For privacy, internal storage (getFilesDir) is better.
+
     public String saveCameraImageToInternalStorage(Context context, File sourceFile) {
          if (sourceFile == null || !sourceFile.exists()) return null;
-         
-         // Move or copy currentPhotoFile to getFilesDir()
+
          String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
          String imageFileName = "IMG_" + timeStamp + ".jpg";
          File destFile = new File(context.getFilesDir(), imageFileName);
@@ -97,7 +121,6 @@ public class ImageService {
              while ((len = in.read(buffer)) > 0) {
                  out.write(buffer, 0, len);
              }
-             // Optional: delete the temp file
              sourceFile.delete();
              return destFile.getAbsolutePath();
          } catch (IOException e) {

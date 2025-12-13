@@ -27,6 +27,10 @@ import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
+import android.os.IBinder;
+import android.content.ComponentName;
+import android.content.ServiceConnection;
+import android.content.Context;
 
 public class AddNote extends AppCompatActivity {
     private EditText titleEdit;
@@ -37,12 +41,57 @@ public class AddNote extends AppCompatActivity {
     private ImageView noteImageView;
     private View backButton;
     private ImageButton deleteImageButton;
+    private ImageButton editImageButton;
     private View imageContainer;
     private NoteManager noteManager;
     private Note currentNote;
     private ImageService imageService;
+    private boolean isBound = false;
     private String currentImagePath;
     private File currentTempCameraFile;
+    private boolean pendingCameraResult = false;
+    private Uri pendingGalleryUri = null;
+    
+    // Service Connection
+    private ServiceConnection connection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            ImageService.LocalBinder binder = (ImageService.LocalBinder) service;
+            imageService = binder.getService();
+            isBound = true;
+            
+            // Handle pending camera result
+            if (pendingCameraResult) {
+                if (currentTempCameraFile != null && currentTempCameraFile.exists()) {
+                    String permPath = imageService.saveCameraImageToInternalStorage(AddNote.this, currentTempCameraFile);
+                    if (permPath != null) {
+                        currentImagePath = permPath;
+                        displayImage(currentImagePath);
+                    } else {
+                        Toast.makeText(AddNote.this, "Failed to save image", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                pendingCameraResult = false;
+            }
+            
+            // Handle pending gallery result
+            if (pendingGalleryUri != null) {
+                String permPath = imageService.saveImageToInternalStorage(AddNote.this, pendingGalleryUri);
+                if (permPath != null) {
+                    currentImagePath = permPath;
+                    displayImage(currentImagePath);
+                } else {
+                    Toast.makeText(AddNote.this, "Failed to save image", Toast.LENGTH_SHORT).show();
+                }
+                pendingGalleryUri = null;
+            }
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            isBound = false;
+        }
+    };
     
     // Activity Result Launchers
     private ActivityResultLauncher<String[]> requestPermissionLauncher;
@@ -67,7 +116,14 @@ public class AddNote extends AppCompatActivity {
             currentImagePath = savedInstanceState.getString("current_image_path");
         }
         
+        
+        
         setContentView(R.layout.activity_add_note);
+
+        startService(new Intent(this, ImageService.class));
+
+        Intent intent = new Intent(this, ImageService.class);
+        bindService(intent, connection, Context.BIND_AUTO_CREATE);
 
         initializeViews();
         setupResultLaunchers();
@@ -75,10 +131,17 @@ public class AddNote extends AppCompatActivity {
         loadNoteIfEditing();
     }
     
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (isBound) {
+            unbindService(connection);
+            isBound = false;
+        }
+        stopService(new Intent(this, ImageService.class));
+    }
+    
     private void setupResultLaunchers() {
-        imageService = new ImageService();
-
-        // Permission Launcher
         requestPermissionLauncher = registerForActivityResult(
                 new ActivityResultContracts.RequestMultiplePermissions(),
                 result -> {
@@ -104,12 +167,16 @@ public class AddNote extends AppCompatActivity {
                 result -> {
                     if (result.getResultCode() == RESULT_OK) {
                         if (currentTempCameraFile != null && currentTempCameraFile.exists()) {
-                            String permPath = imageService.saveCameraImageToInternalStorage(this, currentTempCameraFile);
-                            if (permPath != null) {
-                                currentImagePath = permPath;
-                                displayImage(currentImagePath);
+                            if (isBound) {
+                                String permPath = imageService.saveCameraImageToInternalStorage(this, currentTempCameraFile);
+                                if (permPath != null) {
+                                    currentImagePath = permPath;
+                                    displayImage(currentImagePath);
+                                } else {
+                                    Toast.makeText(this, "Failed to save image", Toast.LENGTH_SHORT).show();
+                                }
                             } else {
-                                Toast.makeText(this, "Failed to save image", Toast.LENGTH_SHORT).show();
+                                pendingCameraResult = true;
                             }
                         }
                     }
@@ -123,12 +190,16 @@ public class AddNote extends AppCompatActivity {
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                         Uri selectedImageUri = result.getData().getData();
                         if (selectedImageUri != null) {
-                            String permPath = imageService.saveImageToInternalStorage(this, selectedImageUri);
-                            if (permPath != null) {
-                                currentImagePath = permPath;
-                                displayImage(currentImagePath);
+                            if (isBound) {
+                                String permPath = imageService.saveImageToInternalStorage(this, selectedImageUri);
+                                if (permPath != null) {
+                                    currentImagePath = permPath;
+                                    displayImage(currentImagePath);
+                                } else {
+                                    Toast.makeText(this, "Failed to save image", Toast.LENGTH_SHORT).show();
+                                }
                             } else {
-                                Toast.makeText(this, "Failed to save image", Toast.LENGTH_SHORT).show();
+                                pendingGalleryUri = selectedImageUri;
                             }
                         }
                     }
@@ -143,6 +214,7 @@ public class AddNote extends AppCompatActivity {
         attachImageButton = findViewById(R.id.attachImageButton);
         noteImageView = findViewById(R.id.noteImageView);
         deleteImageButton = findViewById(R.id.deleteImageButton);
+        editImageButton = findViewById(R.id.editImageButton);
         imageContainer = findViewById(R.id.imageContainer);
         saveButton = findViewById(R.id.saveNoteButton);
         cancelButton = findViewById(R.id.cancelNoteButton);
@@ -154,6 +226,7 @@ public class AddNote extends AppCompatActivity {
         cancelButton.setOnClickListener(v -> finish());
         attachImageButton.setOnClickListener(v -> checkPermissionsAndOpenDialog());
         deleteImageButton.setOnClickListener(v -> removeImage());
+        editImageButton.setOnClickListener(v -> checkPermissionsAndOpenDialog());
 
         if (backButton != null) {
             backButton.setOnClickListener(v -> finish());
@@ -196,6 +269,7 @@ public class AddNote extends AppCompatActivity {
         builder.setTitle("Add Photo");
         builder.setItems(options, (dialog, item) -> {
             if (options[item].equals("Take Photo")) {
+                 if (!isBound) return;
                  try {
                      currentTempCameraFile = imageService.createImageFile(this);
                      Intent intent = imageService.getCaptureImageIntent(this, currentTempCameraFile);
@@ -205,8 +279,10 @@ public class AddNote extends AppCompatActivity {
                      Toast.makeText(this, "Error creating file", Toast.LENGTH_SHORT).show();
                  }
             } else if (options[item].equals("Choose from Gallery")) {
-                Intent intent = imageService.getPickImageIntent();
-                galleryLauncher.launch(intent);
+                if (isBound) {
+                    Intent intent = imageService.getPickImageIntent();
+                    galleryLauncher.launch(intent);
+                }
             } else if (options[item].equals("Cancel")) {
                 dialog.dismiss();
             }

@@ -93,11 +93,17 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                 dueTimeText.setText("HH:MM");
             }
 
-            // Set estimated minutes
-            if (task.getEstimatedMinutes() > 0) {
-                estimatedMinutesText.setText(task.getEstimatedMinutes() + " min");
+            // Set estimated/remaining minutes
+            if (!task.isCompleted()) {
+                 int remaining = task.getEstimatedMinutes() - task.getCompletedMinutes();
+                 if (remaining < 0) remaining = 0;
+                 if (remaining > 0) {
+                     estimatedMinutesText.setText("Restant: " + remaining + " min");
+                 } else {
+                     estimatedMinutesText.setText("0 Min");
+                 }
             } else {
-                estimatedMinutesText.setText("0 Min");
+                 estimatedMinutesText.setText(task.getEstimatedMinutes() + " min");
             }
 
             // Apply strike-through for completed tasks

@@ -13,7 +13,7 @@ import java.util.Locale;
 
 import android.widget.ImageButton;
 
-public class PomodoroTimerActivity extends AppCompatActivity implements PomodoroTimer.TimerListener {
+public class PomodoroTimerActivity extends AppCompatActivity implements PomodoroTimer.TimerListener, android.speech.tts.TextToSpeech.OnInitListener {
 
     private CircularProgressView circularProgressView;
     private TextView timerText;
@@ -30,6 +30,7 @@ public class PomodoroTimerActivity extends AppCompatActivity implements Pomodoro
     private long linkedTaskId = -1;
     private long sessionStartTime = 0;
     private int sessionCompletedMinutes = 0;
+    private android.speech.tts.TextToSpeech tts;
 
     private static final String PREFS_NAME = "PomodoroPrefs";
     private static final String KEY_FOCUS_DURATION = "focus_duration";
@@ -62,6 +63,11 @@ public class PomodoroTimerActivity extends AppCompatActivity implements Pomodoro
         startPauseButton = findViewById(R.id.startPauseButton);
         stopButton = findViewById(R.id.stopButton);
         settingsButton = findViewById(R.id.settingsButton);
+        if (linkedTaskId != -1) {
+             settingsButton.setVisibility(View.GONE);
+        } else {
+             settingsButton.setVisibility(View.VISIBLE);
+        }
         backButton = findViewById(R.id.backButton);
         taskTitleText = findViewById(R.id.taskTitleText);
 
@@ -104,6 +110,28 @@ public class PomodoroTimerActivity extends AppCompatActivity implements Pomodoro
 
         setupListeners();
         updateUI();
+
+        tts = new android.speech.tts.TextToSpeech(this, this);
+    }
+
+    @Override
+    public void onInit(int status) {
+        if (status == android.speech.tts.TextToSpeech.SUCCESS) {
+            int result = tts.setLanguage(Locale.US);
+            if (result == android.speech.tts.TextToSpeech.LANG_MISSING_DATA ||
+                    result == android.speech.tts.TextToSpeech.LANG_NOT_SUPPORTED) {
+                // Handle error
+            }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (tts != null) {
+            tts.stop();
+            tts.shutdown();
+        }
+        super.onDestroy();
     }
 
     private void setupListeners() {
@@ -146,8 +174,17 @@ public class PomodoroTimerActivity extends AppCompatActivity implements Pomodoro
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Save state before returning to Home
-                saveTimerStateToPrefs();
+                // Removed saveTimerStateToPrefs() to force reset on exit
+                // saveTimerStateToPrefs();
+                
+                // Clear prefs to ensure reset on next start if we are exiting completely
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.remove(KEY_TIMER_STATE);
+                editor.remove(KEY_CURRENT_MODE);
+                editor.remove(KEY_REMAINING_MILLIS);
+                editor.remove(KEY_CYCLES_COMPLETED);
+                editor.apply();
+
                 if (linkedTaskId != -1 && pomodoroTimer.getCurrentMode() == PomodoroTimer.TimerMode.FOCUS) {
                     updateTaskProgress();
                 }
@@ -276,6 +313,9 @@ public class PomodoroTimerActivity extends AppCompatActivity implements Pomodoro
                     }
                 }
                 Toast.makeText(PomodoroTimerActivity.this, "Timer finished!", Toast.LENGTH_SHORT).show();
+                if (tts != null && !tts.isSpeaking()) {
+                    tts.speak("Pomodoro completed. Take a break.", android.speech.tts.TextToSpeech.QUEUE_FLUSH, null, null);
+                }
                 updateUI();
             }
         });
@@ -384,8 +424,7 @@ public class PomodoroTimerActivity extends AppCompatActivity implements Pomodoro
 
             PomodoroTimer.TimerState state = PomodoroTimer.TimerState.valueOf(stateStr);
             if (state == PomodoroTimer.TimerState.RUNNING) {
-                // Don't auto-resume, let user start manually
-                pomodoroTimer.setState(PomodoroTimer.TimerState.PAUSED);
+                pomodoroTimer.start();
             } else {
                 pomodoroTimer.setState(state);
             }
