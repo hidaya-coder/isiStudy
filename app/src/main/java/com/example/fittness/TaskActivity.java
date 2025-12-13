@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class TaskActivity extends AppCompatActivity {
 
-    private EditText titleEdit, dateEdit, timeEdit, estMinutesEdit;
+    private EditText titleEdit, dateEdit, timeEdit, estMinutesEdit, breakMinutesEdit;
     private Button saveButton, cancelButton, startPomodoroButton;
     private TaskManager taskManager;
     private Task currentTask;
@@ -57,6 +57,7 @@ public class TaskActivity extends AppCompatActivity {
         dateEdit = findViewById(R.id.dateEditText);
         timeEdit = findViewById(R.id.timeEditText);
         estMinutesEdit = findViewById(R.id.estimatedMinutesEditText);
+        breakMinutesEdit = findViewById(R.id.breakMinutesEditText);
         saveButton = findViewById(R.id.saveButton);
         cancelButton = findViewById(R.id.cancelButton);
         startPomodoroButton = findViewById(R.id.startPomodoroButton);
@@ -110,7 +111,9 @@ public class TaskActivity extends AppCompatActivity {
             titleEdit.setText(currentTask.getTitle());
             dateEdit.setText(currentTask.getDueDate());
             timeEdit.setText(currentTask.getDueTime());
+            timeEdit.setText(currentTask.getDueTime());
             estMinutesEdit.setText(String.valueOf(currentTask.getEstimatedMinutes()));
+            breakMinutesEdit.setText(String.valueOf(currentTask.getBreakMinutes()));
 
             // Afficher le bouton Pomodoro
             startPomodoroButton.setVisibility(View.VISIBLE);
@@ -126,6 +129,7 @@ public class TaskActivity extends AppCompatActivity {
 
         // Masquer le bouton Pomodoro
         startPomodoroButton.setVisibility(View.GONE);
+        breakMinutesEdit.setText("5");
     }
 
     private void setupButtons() {
@@ -182,17 +186,29 @@ public class TaskActivity extends AppCompatActivity {
             return;
         }
 
+        int breakMinutes = 5;
+        try {
+            String breakStr = breakMinutesEdit.getText().toString().trim();
+            if (!breakStr.isEmpty()) {
+                breakMinutes = Integer.parseInt(breakStr);
+            }
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Invalid break minutes", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if (isEditMode && currentTask != null) {
             // Mettre à jour la tâche existante
             currentTask.setTitle(title);
             currentTask.setDueDate(date);
             currentTask.setDueTime(time);
             currentTask.setEstimatedMinutes(estMinutes);
+            currentTask.setBreakMinutes(breakMinutes);
             taskManager.updateTask(currentTask);
             Toast.makeText(this, "Task updated", Toast.LENGTH_SHORT).show();
         } else {
             // Créer une nouvelle tâche
-            taskManager.addTaskWithDetails(title, date, time, estMinutes);
+            taskManager.addTaskWithDetails(title, date, time, estMinutes, breakMinutes);
             Toast.makeText(this, "Task created", Toast.LENGTH_SHORT).show();
         }
 

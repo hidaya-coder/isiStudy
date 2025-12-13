@@ -91,20 +91,20 @@ public class PomodoroTimerActivity extends AppCompatActivity implements Pomodoro
         // Check for linked task estimated time
         if (linkedTaskId != -1) {
             Task task = taskManager.getTaskById(linkedTaskId);
-            if (task != null && task.getEstimatedMinutes() > 0) {
-                int remainingMinutes = task.getEstimatedMinutes() - task.getCompletedMinutes();
-                if (remainingMinutes > 0) {
-                    focusMs = remainingMinutes * 60 * 1000L;
-                    Toast.makeText(this, "Using remaining time: " + remainingMinutes + " min", Toast.LENGTH_SHORT).show();
-                } else {
-                     Toast.makeText(this, "Task is already completed or time exceeded!", Toast.LENGTH_SHORT).show();
-                     // Optional: Could fall back to default or stick to estimated. Using estimated (total) if restant is 0 seems wrong if completed.
-                     // But let's assume if they start it, they want to work more.
-                     // For now, if <= 0 calculate as if 0? No, let's just stick to default or estimated?
-                     // Request: "time restant existe" -> implies positive.
-                     // I will fallback to estimated if remaining is <= 0 to avoid 0 minute timer,
-                     // OR I can set it to a standard pomodoro.
-                     // I'll set it to remaining if > 0.
+            if (task != null) {
+                if (task.getEstimatedMinutes() > 0) {
+                    int remainingMinutes = task.getEstimatedMinutes() - task.getCompletedMinutes();
+                    if (remainingMinutes > 0) {
+                        focusMs = remainingMinutes * 60 * 1000L;
+                        Toast.makeText(this, "Using remaining time: " + remainingMinutes + " min", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, "Task is already completed or time exceeded!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                if (task.getBreakMinutes() > 0) {
+                    shortRestMs = task.getBreakMinutes() * 60 * 1000L;
+                    Toast.makeText(this, "Using task break time: " + task.getBreakMinutes() + " min", Toast.LENGTH_SHORT).show();
                 }
             }
         }

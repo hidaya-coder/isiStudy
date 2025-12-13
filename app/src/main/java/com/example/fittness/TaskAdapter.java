@@ -53,7 +53,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
     class TaskViewHolder extends RecyclerView.ViewHolder {
         CheckBox taskCheckBox;
-        TextView taskTitle, dueDateText, dueTimeText, estimatedMinutesText;
+        TextView taskTitle, dueDateText, dueTimeText, estimatedMinutesText, restantMinutesText, breakDurationText;
         ImageButton deleteButton, editButton;
         Button startPomodoroButton;
 
@@ -64,6 +64,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             dueDateText = itemView.findViewById(R.id.dueDateText);
             dueTimeText = itemView.findViewById(R.id.dueTimeText);
             estimatedMinutesText = itemView.findViewById(R.id.estimatedMinutesText);
+            restantMinutesText = itemView.findViewById(R.id.RestantMinutesText);
+            breakDurationText = itemView.findViewById(R.id.BreakDurationText);
             deleteButton = itemView.findViewById(R.id.deleteTaskButton);
             editButton = itemView.findViewById(R.id.editTaskButton);
             startPomodoroButton = itemView.findViewById(R.id.startPomodoroButton);
@@ -93,18 +95,21 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                 dueTimeText.setText("HH:MM");
             }
 
-            // Set estimated/remaining minutes
+            // Set Estimated minutes
+            estimatedMinutesText.setText("Est: " + task.getEstimatedMinutes() + "m");
+
+            // Set Remaining minutes
             if (!task.isCompleted()) {
                  int remaining = task.getEstimatedMinutes() - task.getCompletedMinutes();
                  if (remaining < 0) remaining = 0;
-                 if (remaining > 0) {
-                     estimatedMinutesText.setText("Restant: " + remaining + " min");
-                 } else {
-                     estimatedMinutesText.setText("0 Min");
-                 }
+                 restantMinutesText.setText("Rem: " + remaining + "m");
+                 restantMinutesText.setVisibility(View.VISIBLE);
             } else {
-                 estimatedMinutesText.setText(task.getEstimatedMinutes() + " min");
+                 restantMinutesText.setText("Rem: 0m");
             }
+
+            // Set Break minutes
+            breakDurationText.setText("Break: " + task.getBreakMinutes() + "m");
 
             // Apply strike-through for completed tasks
             if (task.isCompleted()) {
@@ -112,11 +117,15 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                 dueDateText.setPaintFlags(dueDateText.getPaintFlags() | android.graphics.Paint.STRIKE_THRU_TEXT_FLAG);
                 dueTimeText.setPaintFlags(dueTimeText.getPaintFlags() | android.graphics.Paint.STRIKE_THRU_TEXT_FLAG);
                 estimatedMinutesText.setPaintFlags(estimatedMinutesText.getPaintFlags() | android.graphics.Paint.STRIKE_THRU_TEXT_FLAG);
+                restantMinutesText.setPaintFlags(restantMinutesText.getPaintFlags() | android.graphics.Paint.STRIKE_THRU_TEXT_FLAG);
+                breakDurationText.setPaintFlags(breakDurationText.getPaintFlags() | android.graphics.Paint.STRIKE_THRU_TEXT_FLAG);
             } else {
                 taskTitle.setPaintFlags(taskTitle.getPaintFlags() & ~android.graphics.Paint.STRIKE_THRU_TEXT_FLAG);
                 dueDateText.setPaintFlags(dueDateText.getPaintFlags() & ~android.graphics.Paint.STRIKE_THRU_TEXT_FLAG);
                 dueTimeText.setPaintFlags(dueTimeText.getPaintFlags() & ~android.graphics.Paint.STRIKE_THRU_TEXT_FLAG);
                 estimatedMinutesText.setPaintFlags(estimatedMinutesText.getPaintFlags() & ~android.graphics.Paint.STRIKE_THRU_TEXT_FLAG);
+                restantMinutesText.setPaintFlags(restantMinutesText.getPaintFlags() & ~android.graphics.Paint.STRIKE_THRU_TEXT_FLAG);
+                breakDurationText.setPaintFlags(breakDurationText.getPaintFlags() & ~android.graphics.Paint.STRIKE_THRU_TEXT_FLAG);
             }
 
             // Listeners

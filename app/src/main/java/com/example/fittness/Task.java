@@ -50,4 +50,8 @@ public class Task {
     public void setLinkedPomodoroSessionId(long linkedPomodoroSessionId) {
         this.linkedPomodoroSessionId = linkedPomodoroSessionId;
     }
+
+    private int breakMinutes = 5;
+    public int getBreakMinutes() { return breakMinutes; }
+    public void setBreakMinutes(int breakMinutes) { this.breakMinutes = breakMinutes; }
 }

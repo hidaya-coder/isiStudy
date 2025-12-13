@@ -57,6 +57,9 @@ public class TaskManager {
                 if (obj.has("linkedPomodoroSessionId")) {
                     task.setLinkedPomodoroSessionId(obj.getLong("linkedPomodoroSessionId"));
                 }
+                if (obj.has("breakMinutes")) {
+                    task.setBreakMinutes(obj.getInt("breakMinutes"));
+                }
 
                 tasks.add(task);
             }
@@ -74,12 +77,13 @@ public class TaskManager {
     }
 
     public void addTaskWithDetails(String title, String dueDate, String dueTime,
-                                   int estimatedMinutes) {
+                                   int estimatedMinutes, int breakMinutes) {
         List<Task> tasks = getAllTasks();
         Task task = new Task(nextId++, title, false);
         task.setDueDate(dueDate);
         task.setDueTime(dueTime);
         task.setEstimatedMinutes(estimatedMinutes);
+        task.setBreakMinutes(breakMinutes);
         tasks.add(task);
         saveTasks(tasks);
     }
@@ -130,6 +134,7 @@ public class TaskManager {
                 obj.put("completedMinutes", task.getCompletedMinutes());
                 obj.put("estimatedMinutes", task.getEstimatedMinutes());
                 obj.put("linkedPomodoroSessionId", task.getLinkedPomodoroSessionId());
+                obj.put("breakMinutes", task.getBreakMinutes());
                 jsonArray.put(obj);
             }
             prefs.edit().putString(KEY_TASKS, jsonArray.toString()).apply();
