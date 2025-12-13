@@ -76,8 +76,16 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:gravity="center_vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="10dp"
+                    >
 
                 <!-- Date -->
                 <ImageView
@@ -131,6 +139,14 @@
                     android:textSize="12sp"
                     android:fontFamily="@font/nunito_sans"
                     android:textColor="@color/black" />
+
+                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+                <!-- Completed Time -->
                 <ImageView
                     android:layout_width="16dp"
                     android:layout_height="16dp"
@@ -145,7 +161,9 @@
                     android:text="0m"
                     android:textSize="12sp"
                     android:fontFamily="@font/nunito_sans"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:layout_marginEnd="20dp"
+                    />
                 <ImageView
                     android:layout_width="16dp"
                     android:layout_height="16dp"
@@ -161,7 +179,8 @@
                     android:textSize="12sp"
                     android:fontFamily="@font/nunito_sans"
                     android:textColor="@color/black" />
-                
+
+                </LinearLayout>
             </LinearLayout>
             <Button
                 android:id="@+id/startPomodoroButton"
