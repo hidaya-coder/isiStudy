@@ -45,6 +45,7 @@ public class PomodoroTimer {
         // If timer is stopped, update current mode duration
         if (state == TimerState.STOPPED) {
             updateDurationForCurrentMode();
+            remainingMillis = totalMillis;
         }
     }
 

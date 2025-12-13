@@ -92,8 +92,20 @@ public class PomodoroTimerActivity extends AppCompatActivity implements Pomodoro
         if (linkedTaskId != -1) {
             Task task = taskManager.getTaskById(linkedTaskId);
             if (task != null && task.getEstimatedMinutes() > 0) {
-                focusMs = task.getEstimatedMinutes() * 60 * 1000L;
-                Toast.makeText(this, "Using estimated time: " + task.getEstimatedMinutes() + " min", Toast.LENGTH_SHORT).show();
+                int remainingMinutes = task.getEstimatedMinutes() - task.getCompletedMinutes();
+                if (remainingMinutes > 0) {
+                    focusMs = remainingMinutes * 60 * 1000L;
+                    Toast.makeText(this, "Using remaining time: " + remainingMinutes + " min", Toast.LENGTH_SHORT).show();
+                } else {
+                     Toast.makeText(this, "Task is already completed or time exceeded!", Toast.LENGTH_SHORT).show();
+                     // Optional: Could fall back to default or stick to estimated. Using estimated (total) if restant is 0 seems wrong if completed.
+                     // But let's assume if they start it, they want to work more.
+                     // For now, if <= 0 calculate as if 0? No, let's just stick to default or estimated?
+                     // Request: "time restant existe" -> implies positive.
+                     // I will fallback to estimated if remaining is <= 0 to avoid 0 minute timer,
+                     // OR I can set it to a standard pomodoro.
+                     // I'll set it to remaining if > 0.
+                }
             }
         }
 
@@ -130,6 +142,11 @@ public class PomodoroTimerActivity extends AppCompatActivity implements Pomodoro
         if (tts != null) {
             tts.stop();
             tts.shutdown();
+        }
+        
+        // Strict Reset: Clear all session data if activity is finishing
+        if (isFinishing()) {
+            clearPomodoroSessionData();
         }
         super.onDestroy();
     }
@@ -174,17 +191,6 @@ public class PomodoroTimerActivity extends AppCompatActivity implements Pomodoro
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Removed saveTimerStateToPrefs() to force reset on exit
-                // saveTimerStateToPrefs();
-                
-                // Clear prefs to ensure reset on next start if we are exiting completely
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.remove(KEY_TIMER_STATE);
-                editor.remove(KEY_CURRENT_MODE);
-                editor.remove(KEY_REMAINING_MILLIS);
-                editor.remove(KEY_CYCLES_COMPLETED);
-                editor.apply();
-
                 if (linkedTaskId != -1 && pomodoroTimer.getCurrentMode() == PomodoroTimer.TimerMode.FOCUS) {
                     updateTaskProgress();
                 }
@@ -362,7 +368,25 @@ public class PomodoroTimerActivity extends AppCompatActivity implements Pomodoro
     @Override
     protected void onPause() {
         super.onPause();
-        saveTimerStateToPrefs();
+        if (isFinishing()) {
+            // User is exiting (Back button or finish called), clear data immediately
+            clearPomodoroSessionData();
+        } else {
+            // App is backgrounding but not closing, save state
+            saveTimerStateToPrefs();
+        }
+    }
+
+    private void clearPomodoroSessionData() {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.remove(KEY_TIMER_STATE);
+        editor.remove(KEY_CURRENT_MODE);
+        editor.remove(KEY_REMAINING_MILLIS);
+        editor.remove(KEY_CYCLES_COMPLETED);
+        editor.remove(KEY_LINKED_TASK_ID);
+        editor.remove(KEY_SESSION_START_TIME);
+        editor.remove(KEY_SESSION_COMPLETED_MINUTES);
+        editor.apply();
     }
 
     @Override
