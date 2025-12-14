@@ -18,17 +18,23 @@ public class Signup extends AppCompatActivity {
     private EditText editFullName, editEmail, editPassword, editConfirmPassword;
     private Button btnSignup;
     private TextView textLogin;
+    private UserManager userManager;
 
-    // Minimum 8 chars, at least 1 letter and 1 number
     private static final Pattern PASSWORD_PATTERN =
             Pattern.compile("^(?=.*[0-9])(?=.*[a-zA-Z]).{8,}$");
+
+
+    private static final Pattern GMAIL_PATTERN =
+            Pattern.compile("^[a-zA-Z0-9._-]+@gmail\\.com$");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        // Init Views
+        userManager = new UserManager(this);
+
+        
         editFullName = findViewById(R.id.editFullName);
         editEmail = findViewById(R.id.editEmail);
         editPassword = findViewById(R.id.editPassword);
@@ -36,7 +42,7 @@ public class Signup extends AppCompatActivity {
         btnSignup = findViewById(R.id.btnSignup);
         textLogin = findViewById(R.id.textLogin);
 
-        // Sign Up Click
+
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,11 +52,11 @@ public class Signup extends AppCompatActivity {
             }
         });
 
-        // Login Link Click
+     
         textLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish(); // Return to Login
+                finish(); 
             }
         });
     }
@@ -71,8 +77,8 @@ public class Signup extends AppCompatActivity {
             return false;
         }
 
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            editEmail.setError("Invalid email address");
+        if (!GMAIL_PATTERN.matcher(email).matches()) {
+            editEmail.setError("Must be a valid @gmail.com address");
             return false;
         }
 
@@ -95,10 +101,16 @@ public class Signup extends AppCompatActivity {
     }
 
     private void performSignup() {
-        // Here you would normally save the user to a database
-        Toast.makeText(this, "Account created successfully!", Toast.LENGTH_SHORT).show();
+        String fullName = editFullName.getText().toString().trim();
+        String email = editEmail.getText().toString().trim();
+        String password = editPassword.getText().toString().trim();
 
-        // Redirect to Login
-        finish();
+        if (userManager.registerUser(fullName, email, password)) {
+            Toast.makeText(this, "Account created successfully!", Toast.LENGTH_SHORT).show();
+            finish(); 
+        } else {
+            editEmail.setError("Email already registered");
+            Toast.makeText(this, "User already exists", Toast.LENGTH_SHORT).show();
+        }
     }
 }

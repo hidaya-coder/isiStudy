@@ -44,31 +44,41 @@ public class Login extends AppCompatActivity {
                 if (email.isEmpty()) {
                     editEmail.setError("Email is required");
                     correct = false;
+                } else if (!email.endsWith("@gmail.com")) {
+                    editEmail.setError("Must be a @gmail.com address");
+                    correct = false;
                 }
+
                 if (password.isEmpty()) {
                     editPassword.setError("Password is required");
                     correct = false;
                 }
 
                 if (correct) {
-                    android.util.Log.d("Login", "Credentials valid, attempting login for: " + email);
-                    // 1. SAUVEGARDER LE STATUT DE CONNEXION - AJOUTÉ ICI
-                    AuthHelper.setLoggedIn(Login.this, email);
+                    UserManager userManager = new UserManager(Login.this);
+                    
+                    if (userManager.validateUser(email, password)) {
+                        android.util.Log.d("Login", "Credentials valid, attempting login for: " + email);
+                        // 1. SAUVEGARDER LE STATUT DE CONNEXION
+                        AuthHelper.setLoggedIn(Login.this, email);
 
-                    // 2. Créer l'intent pour Home
-                    Intent intent = new Intent(Login.this, Home.class);
+                        // 2. Créer l'intent pour Home
+                        Intent intent = new Intent(Login.this, Home.class);
 
-                    // 3. Optionnel : passer l'email en extra
-                    intent.putExtra("email", email);
+                        // 3. Optionnel : passer l'email en extra
+                        intent.putExtra("email", email);
 
-                    // 4. Démarrer Home
-                    startActivity(intent);
+                        // 4. Démarrer Home
+                        startActivity(intent);
 
-                    // 5. IMPORTANT : Fermer l'activité Login
-                    finish();
+                        // 5. IMPORTANT : Fermer l'activité Login
+                        finish();
 
-                    // 6. Message de confirmation
-                    Toast.makeText(Login.this, "Login successful!", Toast.LENGTH_SHORT).show();
+                        // 6. Message de confirmation
+                        Toast.makeText(Login.this, "Login successful!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(Login.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
