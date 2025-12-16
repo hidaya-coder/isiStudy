@@ -42,7 +42,7 @@
             android:id="@+id/settingsButton"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@android:drawable/ic_menu_preferences"
+            android:src="@drawable/setting"
             android:background="?android:attr/selectableItemBackgroundBorderless"
             app:tint="@color/black"
             android:contentDescription="Settings" />
@@ -69,7 +69,7 @@
             android:layout_marginTop="40dp"
             android:visibility="gone" />
 
-        <com.example.fittness.CircularProgressView
+        <com.example.isiStudy.CircularProgressView
             android:id="@+id/circularProgressView"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

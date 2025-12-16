@@ -20,11 +20,11 @@
         android:layout_marginBottom="20dp">
 
         <androidx.cardview.widget.CardView
-            android:layout_width="55dp"
-            android:layout_height="55dp"
-            app:cardCornerRadius="27.5dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:cardCornerRadius="28dp"
             app:cardElevation="2dp"
-            android:layout_marginEnd="16dp">
+            android:layout_marginEnd="15dp">
 
             <ImageView
                 android:id="@+id/personIcon"
@@ -48,7 +48,7 @@
                 android:text="Hi,"
                 android:textSize="18sp"
                 android:fontFamily="@font/nunito_sans"
-                android:textColor="#757575" />
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/userNameText"
@@ -68,7 +68,7 @@
             android:src="@android:drawable/ic_lock_power_off"
             app:tint="@color/black"
             android:contentDescription="Logout"
-            android:layout_marginStart="16dp"/>
+            android:layout_marginStart="14dp"/>
     </LinearLayout>
 
     <!-- Scrollable content area -->
