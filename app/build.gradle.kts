@@ -1,13 +1,14 @@
 plugins {
     id("com.android.application")
+    id("com.google.gms.google-services") version "4.4.4"
 }
 
 android {
-    namespace = "com.example.fittness"
+    namespace = "com.example.isiStudy"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.fittness"
+        applicationId = "com.example.isiStudy"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
@@ -33,6 +34,10 @@ android {
 
 dependencies {
 
+    // Firebase
+    implementation(platform("com.google.firebase:firebase-bom:34.7.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-auth")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.9.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
