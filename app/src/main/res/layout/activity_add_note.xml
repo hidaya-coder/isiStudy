@@ -129,6 +129,17 @@
                 android:scrollbars="vertical"
                 android:layout_marginBottom="16dp"/>
 
+
+            <Button
+                android:id="@+id/correctWithAiButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Correct with AI ✨"
+                android:background="@drawable/bg_button"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="16dp"
+                android:textAllCaps="false"/>
+
             <Button
                 android:id="@+id/attachImageButton"
                 android:layout_width="match_parent"
@@ -150,6 +161,9 @@
         android:orientation="horizontal"
         android:gravity="end"
         android:layout_alignParentBottom="true">
+
+
+
 
         <Button
             android:id="@+id/cancelNoteButton"
